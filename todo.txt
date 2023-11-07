@@ -1,0 +1,5 @@
+1.) add clerk authentication
+2.) light and dark theme
+
+next:
+1.) set up initial profile and redirect to the server page
