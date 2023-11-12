@@ -32,12 +32,11 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       (channel: any) => channel.type == "VIDEO"
     );
     const otherMembers = members.filter(
-      (member: any) => member.profileId.id != profile.id
+      (member: any) => member.profileId != profile._id
     );
     const role = members.find(
-      (member: any) => member.profileId.id == profile.id
+      (member: any) => member.profileId == profile._id
     )?.role;
-
     const propServer = {
       _id: server._id.toString(),
       name: server.name,

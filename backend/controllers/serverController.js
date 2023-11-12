@@ -98,3 +98,40 @@ export const updateInviteCode = async (req, res) => {
     console.log("ERROR FROM UPDATE SERVER INVITE CODE CONTROLLER", error);
   }
 }
+
+// add user to a server
+export const addToAServer = async (req, res) => {
+  try {
+    const { inviteCode, profileId } = req.params;
+    const server = await Server.findOne({ inviteCode });
+    if (!server) {
+      return new Error("No server found");
+    }
+    const profile = await Profile.findById(profileId);
+    if (!profile) {
+      return new Error("No profile found");
+    }
+
+    // if server already uses current user return
+    if (profile.servers.includes(server._id)) {
+      return res.status(200).json(server);
+    }
+    const newMember = new Member({
+      profileId: profileId,
+      serverId: server._id
+    });
+    await newMember.save();
+
+    // push this member into the current server
+    server.members.push(newMember._id);
+    profile.members.push(newMember._id);
+    profile.servers.push(server._id);
+
+    await server.save();
+    await profile.save();
+
+    return res.statsu(200).json(server);
+  } catch (error) {
+
+  }
+}
