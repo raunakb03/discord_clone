@@ -132,6 +132,23 @@ export const addToAServer = async (req, res) => {
 
     return res.statsu(200).json(server);
   } catch (error) {
+    console.log("ERROR FROM ADD TO SERVER CONTROLLER", error);
+  }
+}
 
+// edit server
+export const editServer = async (req, res) => {
+  try {
+    const { serverId } = req.params;
+    const { profileId, name, imageUrl } = req.body;
+    const profile = await Profile.findById(profileId);
+    if (!profile) {
+      throw new Error("PROFILE NOT FOUND");
+    }
+    const updatedServer = await Server.findByIdAndUpdate(serverId, { name, imageUrl }, { new: true })
+
+    return res.status(200).json(updatedServer);
+  } catch (error) {
+    console.log("ERROR FROM EIDT SERVER CONTROLLER", error);
   }
 }
