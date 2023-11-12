@@ -4,6 +4,7 @@ export type ModalType = "createServer" | "invite";
 
 interface ModalData {
   server?: any;
+  profileId?: any
 }
 
 interface ModalStore {

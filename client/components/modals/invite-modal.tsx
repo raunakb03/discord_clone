@@ -40,10 +40,17 @@ export const InviteModal = () => {
   const onNew = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.put(
-        `/api/servers/invite-code/${server?._id}`
+      const { data } = await axios.put(
+        `${process.env.BASE_URL}/api/server/invite-code/${server?._id}/${server?.profileId}`
       );
-      onOpen("invite", { server: response.data });
+      const propServer = {
+        _id: data._id.toString(),
+        name: data.name,
+        imageUrl: data.imageUrl,
+        inviteCode: data.inviteCode,
+        profileId: data.profileId.toString(),
+      };
+      onOpen("invite", { server: propServer });
     } catch (error: any) {
       console.log(error);
     } finally {

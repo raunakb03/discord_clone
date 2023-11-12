@@ -36,7 +36,8 @@ const formSchema = z.object({
 
 export const CreateServerModal = () => {
   const router = useRouter();
-  const { isOpen, type, onClose } = useModal();
+  const { isOpen, type, onClose, data } = useModal();
+  const profileId= data.profileId
 
   const isModalOpen = isOpen && type === "createServer";
 
@@ -52,7 +53,10 @@ export const CreateServerModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/servers`, values);
+      await axios.post(`${process.env.BASE_URL}/api/server/createServer`, {
+        ...values,
+        profileId,
+      });
       form.reset();
       router.refresh();
       onClose();

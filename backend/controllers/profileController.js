@@ -4,7 +4,19 @@ import Profile from "../models/ProfileSchema.js";
 export const getUserByUserId = async (req, res) => {
   try {
     const { profileId } = req.params;
-    const profile = await Profile.findOne({ userId: profileId });
+    const { populate } = req.query;
+    let populatedArray = [];
+    if (populate) {
+      populatedArray = [...populate.split("-")]
+    }
+
+    let profile;
+    if (populate) {
+      profile = await Profile.findOne({ userId: profileId }).populate(populatedArray);
+    }
+    else {
+      profile = await Profile.findOne({ userId: profileId })
+    }
     return res.json(profile);
   } catch (error) {
     console.log("ERROR FROM GET USER BY USERID CONTROLLER", error);

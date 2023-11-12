@@ -2,9 +2,9 @@ import Profile from "../models/ProfileSchema.js";
 import Server from "../models/ServerSchema.js";
 import Channel from "../models/ChannelSchema.js";
 import Member from "../models/MemberSchema.js";
-
 import { v4 as uuidv4 } from "uuid";
 
+// create a new server
 export const createServer = async (req, res) => {
   try {
     const { imageUrl, name, profileId } = req.body;
@@ -55,5 +55,46 @@ export const createServer = async (req, res) => {
 
   } catch (error) {
     console.log("ERROR FROM CREATE SERVER CONTROLLER", error);
+  }
+}
+
+// get a server by id
+export const getServerById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { populate } = req.query;
+    let populatedArray = [];
+    if (populate) {
+      populatedArray = [...populate.split("-")]
+    }
+    const server = await Server.findById(id).populate(populatedArray);
+    if (!server) {
+      throw new Error("No server found");
+    }
+    return res.json(server);
+  } catch (error) {
+    console.log("ERROR FROM GET SERVER BY ID CONTROLLER", error);
+  }
+}
+
+// update server invite code
+export const updateInviteCode = async (req, res) => {
+  try {
+    const { serverId, profileId } = req.params;
+    const server = await Server.findOne({ _id: serverId, profileId: profileId });
+    if (!server) return null;
+    const updatedServer = await Server.findOneAndUpdate(
+      {
+        _id: serverId,
+        profileId: profileId,
+      },
+      { inviteCode: uuidv4() },
+      { new: true }
+    );
+
+    return res.status(200).json(updatedServer);
+
+  } catch (error) {
+    console.log("ERROR FROM UPDATE SERVER INVITE CODE CONTROLLER", error);
   }
 }
