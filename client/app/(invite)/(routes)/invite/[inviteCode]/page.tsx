@@ -23,8 +23,12 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     const { data } = await axios.get(
       `${process.env.BASE_URL}/api/server/invite-code/${params.inviteCode}/${profile._id}`
     );
-    return redirect(`/servers/${data._id}`);
-  } catch (error) {
+    return (
+      <div>
+        <Link href={`/servers/${data._id}`}>Go Back</Link>
+      </div>
+    );
+  } catch (error) { 
     console.log(error);
   }
 };
