@@ -73,6 +73,21 @@ export const MembersModal = () => {
     fetchProfiles();
   }, [server]);
 
+  const onDelete = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const { data } = await axios.delete(
+        `${process.env.BASE_URL}/api/member/deleteMember/${memberId}`
+      );
+      router.refresh();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+
   const onRolechange = async (
     memberId: string,
     role: "GUEST" | "MODERATOR"
@@ -154,7 +169,9 @@ export const MembersModal = () => {
                         </DropdownMenuPortal>
                       </DropdownMenuSub>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => onDelete(profile.memberId)}
+                      >
                         <Gavel className="h-4 w-4 mr-2" />
                         kick
                       </DropdownMenuItem>

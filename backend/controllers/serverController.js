@@ -130,7 +130,7 @@ export const addToAServer = async (req, res) => {
     await server.save();
     await profile.save();
 
-    return res.statsu(200).json(server);
+    return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM ADD TO SERVER CONTROLLER", error);
   }
