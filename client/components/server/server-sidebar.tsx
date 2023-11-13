@@ -52,7 +52,8 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           textChannels={textChannels}
           audioChannels={audioChannels}
           videoChannels={videoChannels}
-          members={otherMembers}
+          otherMembers={otherMembers}
+          members={server.members}
         />
       </div>
     );

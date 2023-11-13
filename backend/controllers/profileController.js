@@ -23,6 +23,22 @@ export const getUserByUserId = async (req, res) => {
   }
 }
 
+// get member by id
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { populate } = req.query;
+    let populatedArray = [];
+    if (populate) {
+      populatedArray = [...populate.split("-")]
+    }
+    const profile = await Profile.findById(id).populate(populatedArray);
+    return res.status(200).json(profile);
+  } catch (error) {
+    console.log("ERROR FROM GET USER BY ID(NOT PROFILE) CONTROLLER", error);
+  }
+}
+
 // create a new user
 export const createUser = async (req, res) => {
   const body = req.body;
