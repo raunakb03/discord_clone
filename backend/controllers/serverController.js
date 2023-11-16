@@ -152,3 +152,49 @@ export const editServer = async (req, res) => {
     console.log("ERROR FROM EIDT SERVER CONTROLLER", error);
   }
 }
+
+// remove profile
+export const leaveServer = async (req, res) => {
+  try {
+    const { serverId, profileId } = req.params;
+    const server = await Server.findById(serverId);
+    if (!server) {
+      throw new Error("Server not found");
+    }
+    const profile = await Profile.findById(profileId);
+    if (!profile) {
+      throw new Error("Profile not found");
+    }
+
+    // remove servers from the profile
+    const newServers = profile.servers.filter((server) => server.toString() !== serverId.toString());
+    profile.servers = newServers;
+
+    // delete the member
+    const member = await Member.findOne({ profileId: profileId, serverId: serverId });
+    if (!member) {
+      throw new Error("Member not found");
+    }
+    await Member.findByIdAndDelete(member._id);
+
+    // remove memebers from the profile
+    const newMembers = profile.members.filter((m) => m.toString() !== member._id.toString());
+    profile.members = newMembers;
+
+    // remove channels from the profile
+    const serverChannels = server.channels;
+    const newChannels = profile.channels.filter((channel) => !serverChannels.includes(channel.toString()));
+    profile.channels = newChannels;
+
+    await profile.save();
+
+    // delete this member from the server
+    const newServerMembers = server.members.filter((m) => m.toString() !== member._id.toString());
+    server.members = newServerMembers;
+    await server.save();
+
+    return res.status(200).json(server);
+  } catch (error) {
+    console.log("ERROR FROM LEAVE SERVER CONTROLLER", error);
+  }
+}

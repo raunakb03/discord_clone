@@ -76,8 +76,8 @@ export const CreateChannelModal = () => {
         }
       );
       form.reset();
-      router.refresh();
       onClose();
+      router.refresh();
     } catch (error: any) {
       console.log(error);
     }
