@@ -5,6 +5,7 @@ import { connectDb } from './utils/db.js';
 import userRouter from './routes/profileRoute.js';
 import serverRouter from './routes/serverRoute.js';
 import memberRouter from './routes/memberRoute.js';
+import channelRouter from './routes/channelRoute.js';
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use('/api/profile', userRouter)
 app.use('/api/server', serverRouter)
 app.use('/api/member', memberRouter)
+app.use('/api/channel', channelRouter)
+
 
 const PORT = process.env.port || 5001
 app.listen(PORT, () => {
