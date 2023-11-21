@@ -198,3 +198,46 @@ export const leaveServer = async (req, res) => {
     console.log("ERROR FROM LEAVE SERVER CONTROLLER", error);
   }
 }
+
+// delete server
+export const deleteServer = async (req, res) => {
+  try {
+    const { serverId, profileId } = req.params;
+    const server = await Server.findOne({ _id: serverId, profileId: profileId }).populate(["members"]);
+    const profile = await Profile.findById(profileId);
+    if (!server) {
+      throw new Error("Server not found");
+    }
+
+    // removing the member and server from the profile
+    await Promise.all(server.members.map(async (member) => {
+      const profile = await Profile.findById(member.profileId);
+      if (!profile) {
+        throw new Error("Profile not found");
+      }
+      // removing server
+      const newServers = profile.servers.filter((server) => server.toString() !== serverId.toString());
+      // removing member
+      const newMembers = profile.members.filter((m) => m.toString() !== member._id.toString());
+      await Profile.findByIdAndUpdate(profile._id, { servers: newServers, members: newMembers }, { new: true });
+      await Member.findByIdAndDelete(member._id);
+    }));
+
+    // deleting channels from the profile
+    const newChannels = profile.channels.filter((channel) => !server.channels.includes(channel))
+    await Profile.findByIdAndUpdate(profile._id, { channels: newChannels }, { new: true });
+
+    // delete the channels
+    await Promise.all(server.channels.map(async (channel) => {
+      await Channel.findByIdAndDelete(channel._id);
+    }
+    ));
+
+    // delete the current server
+    await Server.findByIdAndDelete(serverId);
+
+    return res.status(200).json(server);
+  } catch (error) {
+    console.log("ERROR FROM DELETE SERVER CONTROLLER", error);
+  }
+}

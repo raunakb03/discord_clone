@@ -14,20 +14,20 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
-export const LeaveServerModal = () => {
+export const DeleteServerModal = () => {
   const { isOpen, type, onClose, data, onOpen } = useModal();
   const { server } = data;
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const isModalOpen = isOpen && type === "leaveServer";
+  const isModalOpen = isOpen && type === "deleteServer";
 
   const onClick = async () => {
     try {
       setIsLoading(true);
-      await axios.put(
-        `${process.env.BASE_URL}/api/server/leaveServer/${server?._id}/${server?.currUser}`
+      await axios.delete(
+        `${process.env.BASE_URL}/api/server/deleteServer/${server?._id}/${server?.currUser}`
       );
       onClose();
       router.refresh();
@@ -44,14 +44,16 @@ export const LeaveServerModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Leave server
+            Delete server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Are you sure you want to leave{" "}
-            <span className="font-semibold text-indigo-500">
-              {server?.name}
-            </span>{" "}
-            ?
+            <p>
+              Server{" "}
+              <span className="font-semibold text-indigo-500">
+                {server?.name}
+              </span>{" "}
+              will de deleted permanently
+            </p>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">
