@@ -9,7 +9,7 @@ const ServerIdLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: { serverId: string };
+  params: any;
 }) => {
   const profile = await currentProfile(["members"]);
   if (!profile) {
@@ -18,7 +18,7 @@ const ServerIdLayout = async ({
   const profileMembers = profile.members;
   try {
     const { data: server } = await axios.get(
-      `${process.env.BASE_URL}/api/server/getServer/${params.serverId}`
+      `${process.env.BASE_URL}/api/server/getServer/${params.serverId[0]}`
     );
     // check if this member is a member of the current server
     let isMember = false;
@@ -37,7 +37,7 @@ const ServerIdLayout = async ({
   return (
     <div className="h-full">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
-        <ServerSidebar serverId={params.serverId} />
+        <ServerSidebar serverId={params.serverId[0]} />
       </div>
       <main className="h-full md:pl-60">{children}</main>
     </div>
