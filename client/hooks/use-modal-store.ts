@@ -7,12 +7,14 @@ export type ModalType =
   | "members"
   | "createChannel"
   | "leaveServer"
-  | "deleteServer";
+  | "deleteServer"
+  | "deleteChannel";
 
 interface ModalData {
   server?: any;
   profileId?: any;
   channelType?: "TEXT" | "AUDIO" | "VIDEO";
+  channel?: any;
 }
 
 interface ModalStore {

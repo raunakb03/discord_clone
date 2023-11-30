@@ -54,7 +54,7 @@ export const CreateChannelModal = () => {
   const { isOpen, type, onClose, data } = useModal();
   const server = data?.server;
   const channelType = data?.channelType;
-  const profileId = server?.profileId;
+  const currUser = server?.currUser;
   const isModalOpen = isOpen && type === "createChannel";
   const serverId = server?._id;
 
@@ -82,7 +82,7 @@ export const CreateChannelModal = () => {
         `${process.env.BASE_URL}/api/channel/createChannel/${serverId}`,
         {
           ...values,
-          profileId,
+          profileId: currUser,
         }
       );
       form.reset();

@@ -3,6 +3,7 @@ import Profile from "../models/ProfileSchema.js";
 import Server from "../models/ServerSchema.js";
 import Channel from "../models/ChannelSchema.js";
 
+// create a new channel
 export const createChannel = async (req, res) => {
   try {
     const { name, type, profileId } = req.body;
@@ -31,6 +32,40 @@ export const createChannel = async (req, res) => {
     await profile.save();
 
     return res.status(200).json(newChannel);
+  } catch (error) {
+    console.log("ERROR FROM CREATE CHANNEL CONTROLLER", error);
+  }
+}
+
+// delete channel
+export const deleteChannel = async (req, res) => {
+  try {
+    const { serverId, userId, channelId } = req.params;
+
+    const server = await Server.findById(serverId);
+    const profile = await Profile.findById(userId);
+    const channel = await Channel.findById(channelId);
+
+    if (!server || !channel || !profile) {
+      throw new Error("Invalid Request")
+    }
+
+    if (channel.name == 'general') {
+      throw new Error("General channel cannot be deleted");
+    }
+
+    // remove the channel from the server
+    const newChannels = await server?.channels?.filter((channel) => channel.toString() != channelId.toString());
+    await Server.findByIdAndUpdate(serverId, { channels: newChannels }, { new: true });
+
+    // remove the channel from the user profile
+    const profileChannels = profile?.channels?.filter((channel) => channel.toString() != channelId.toString());
+    await Profile.findByIdAndUpdate(userId, { channels: profileChannels }, { new: true });
+
+    // remove the channel
+    await Channel.findByIdAndDelete(channelId);
+
+    return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM CREATE CHANNEL CONTROLLER", error);
   }
