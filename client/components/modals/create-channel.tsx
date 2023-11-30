@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect } from "react";
 
 enum ChannelType {
   TEXT = "TEXT",
@@ -51,18 +52,27 @@ const formSchema = z.object({
 export const CreateChannelModal = () => {
   const router = useRouter();
   const { isOpen, type, onClose, data } = useModal();
-  const server= data?.server;
+  const server = data?.server;
+  const channelType = data?.channelType;
   const profileId = server?.profileId;
   const isModalOpen = isOpen && type === "createChannel";
-  const serverId= server?._id;
+  const serverId = server?._id;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", "TEXT");
+    }
+  }, [channelType]);
 
   const isLoading = form.formState.isSubmitting;
 

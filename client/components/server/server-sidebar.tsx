@@ -65,7 +65,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       currUser: profile._id.toString(),
     };
 
-    let memberIdToProfile = {};
+    let profileIdToProfile = {};
     if (otherMembers.length > 0) {
       await Promise.all(
         otherMembers.map(async (member: any) => {
@@ -73,7 +73,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             const { data } = await axios.get(
               `${process.env.BASE_URL}/api/profile/user/${member.profileId}`
             );
-            memberIdToProfile[data._id] = data;
+            profileIdToProfile[data._id] = data;
           } catch (error) {
             console.log(error);
           }
@@ -128,8 +128,8 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                   type: "member",
                   data: otherMembers?.map((member: any) => ({
                     id: member._id,
-                    name: memberIdToProfile[member.profileId].name,
-                    // name: memberIdToProfile?[member.profileId]?.name,
+                    name: profileIdToProfile[member.profileId].name,
+                    // name: profileIdToProfile?[member.profileId]?.name,
                     icon: roleIconMap[member.role],
                   })),
                 },
@@ -206,7 +206,12 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 server={propServer}
               />
               {otherMembers.map((member: any) => (
-                <ServerMember />
+                <ServerMember
+                  key={member._id}
+                  member={member}
+                  server={propServer}
+                  profileIdToProfile={profileIdToProfile}
+                />
               ))}
             </div>
           )}

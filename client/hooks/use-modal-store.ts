@@ -12,6 +12,7 @@ export type ModalType =
 interface ModalData {
   server?: any;
   profileId?: any;
+  channelType?: "TEXT" | "AUDIO" | "VIDEO";
 }
 
 interface ModalStore {
