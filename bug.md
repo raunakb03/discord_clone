@@ -1,5 +1,2 @@
-joining server without having an accoung
-
+joining server without having an account
 redirecting issue
-
-not showing any member in the shortcut of manage members without opening once it from the menu options

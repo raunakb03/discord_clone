@@ -67,6 +67,22 @@ export const deleteChannel = async (req, res) => {
 
     return res.status(200).json(server);
   } catch (error) {
-    console.log("ERROR FROM CREATE CHANNEL CONTROLLER", error);
+    console.log("ERROR FROM DELETE CHANNEL CONTROLLER", error);
+  }
+}
+
+export const editChannel = async (req, res) => {
+  try {
+    const { serverId, channelId } = req.params;
+    const { name, type } = req.body;
+
+    const server = await Server.findById(serverId);
+    if (!server) {
+      throw new Error("server not found");
+    }
+    const channel = await Channel.findByIdAndUpdate(channelId, { name, type }, { new: true });
+    return res.status(200).json(channel);
+  } catch (error) {
+    console.log("ERROR FROM EDIT CHANNEL CONTROLLER", error);
   }
 }

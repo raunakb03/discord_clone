@@ -204,6 +204,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 role={role}
                 label="Members"
                 server={propServer}
+                members={otherMembers}
               />
               {otherMembers.map((member: any) => (
                 <ServerMember

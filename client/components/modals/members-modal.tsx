@@ -49,6 +49,8 @@ export const MembersModal = () => {
   const [profiles, setProfiles] = useState<any>([]);
   const [loadingId, setLoadingId] = useState("");
 
+  console.log(server);
+
   useEffect(() => {
     const fetchProfiles = async () => {
       if (server) {
