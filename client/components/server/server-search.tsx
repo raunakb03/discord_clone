@@ -10,7 +10,6 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
-import { set } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 
 interface ServerSearchProps {
