@@ -57,3 +57,17 @@ export const deleteMember = async (req, res) => {
     console.log("ERROR FROM DELETE MEMBER CONTROLLER", error);
   }
 }
+
+// get member
+export const getMember = async (req, res) => {
+  try {
+    const { profileId, serverId } = req.params;
+    const member = await Member.findOne({ profileId: profileId, serverId: serverId });
+    if (!member) {
+      return null;
+    }
+    return res.status(200).json(member);
+  } catch (error) {
+    console.log("ERROR FROM GET MEMBER CONTROLLER", error);
+  }
+}

@@ -86,3 +86,17 @@ export const editChannel = async (req, res) => {
     console.log("ERROR FROM EDIT CHANNEL CONTROLLER", error);
   }
 }
+
+// get channel by id
+export const getChannelById = async (req, res) => {
+  try {
+    const { channelId } = req.params;
+    const channel = await Channel.findById(channelId);
+    if (!channel) {
+      throw new Error("Channel not found");
+    }
+    return res.status(200).json(channel);
+  } catch (error) {
+    console.log("ERROR FROM GET CHANNEL BY ID CONTROLLER", error);
+  }
+}
