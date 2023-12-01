@@ -18,6 +18,12 @@ const ChannelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Server",
     },
+    messages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Message",
+      },
+    ],
   },
   {
     timestamps: true,
