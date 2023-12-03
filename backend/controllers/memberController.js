@@ -71,3 +71,17 @@ export const getMember = async (req, res) => {
     console.log("ERROR FROM GET MEMBER CONTROLLER", error);
   }
 }
+
+// get member
+export const getMemberWithProfile = async (req, res) => {
+  try {
+    const { profileId, serverId } = req.params;
+    const member = await Member.findOne({ profileId: profileId, serverId: serverId }).populate("profileId");
+    if (!member) {
+      return null;
+    }
+    return res.status(200).json(member);
+  } catch (error) {
+    console.log("ERROR FROM GET MEMBER WITH PROFILE CONTROLLER", error);
+  }
+}

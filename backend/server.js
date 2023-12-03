@@ -6,6 +6,7 @@ import userRouter from './routes/profileRoute.js';
 import serverRouter from './routes/serverRoute.js';
 import memberRouter from './routes/memberRoute.js';
 import channelRouter from './routes/channelRoute.js';
+import conversationRouter from './routes/conversationRoute.js';
 
 const app = express();
 dotenv.config();
@@ -19,7 +20,7 @@ app.use('/api/profile', userRouter)
 app.use('/api/server', serverRouter)
 app.use('/api/member', memberRouter)
 app.use('/api/channel', channelRouter)
-
+app.use('/api/conversation', conversationRouter);
 
 const PORT = process.env.port || 5001
 app.listen(PORT, () => {
