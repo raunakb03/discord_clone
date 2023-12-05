@@ -1,2 +1,3 @@
 joining server without having an account
 redirecting issue
+also include conversation in the member

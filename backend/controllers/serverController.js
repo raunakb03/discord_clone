@@ -55,6 +55,7 @@ export const createServer = async (req, res) => {
 
   } catch (error) {
     console.log("ERROR FROM CREATE SERVER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -74,6 +75,7 @@ export const getServerById = async (req, res) => {
     return res.json(server);
   } catch (error) {
     console.log("ERROR FROM GET SERVER BY ID CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -96,6 +98,7 @@ export const updateInviteCode = async (req, res) => {
 
   } catch (error) {
     console.log("ERROR FROM UPDATE SERVER INVITE CODE CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -133,6 +136,7 @@ export const addToAServer = async (req, res) => {
     return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM ADD TO SERVER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -150,6 +154,7 @@ export const editServer = async (req, res) => {
     return res.status(200).json(updatedServer);
   } catch (error) {
     console.log("ERROR FROM EIDT SERVER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -196,6 +201,7 @@ export const leaveServer = async (req, res) => {
     return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM LEAVE SERVER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -239,5 +245,6 @@ export const deleteServer = async (req, res) => {
     return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM DELETE SERVER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }

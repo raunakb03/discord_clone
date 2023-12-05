@@ -15,6 +15,7 @@ export const changeMemberRole = async (req, res) => {
     return res.status(200).json(updatedMember);
   } catch (error) {
     console.log("ERROR FROM CHANGE MEMBER ROLE CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -55,6 +56,7 @@ export const deleteMember = async (req, res) => {
     return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM DELETE MEMBER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -69,6 +71,7 @@ export const getMember = async (req, res) => {
     return res.status(200).json(member);
   } catch (error) {
     console.log("ERROR FROM GET MEMBER CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -83,5 +86,6 @@ export const getMemberWithProfile = async (req, res) => {
     return res.status(200).json(member);
   } catch (error) {
     console.log("ERROR FROM GET MEMBER WITH PROFILE CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }

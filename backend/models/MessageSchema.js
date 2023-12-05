@@ -8,6 +8,7 @@ const MessageSchema = new mongoose.Schema(
     },
     fileUrl: {
       type: String,
+      default: "",
     },
     memberId: {
       type: mongoose.Schema.Types.ObjectId,

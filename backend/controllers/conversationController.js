@@ -57,5 +57,6 @@ export const createConversation = async (req, res) => {
     return res.status(200).json(returnConversation);
   } catch (error) {
     console.log("ERROR FROM CREATE CONVERSATION CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }

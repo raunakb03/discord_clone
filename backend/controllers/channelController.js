@@ -34,6 +34,7 @@ export const createChannel = async (req, res) => {
     return res.status(200).json(newChannel);
   } catch (error) {
     console.log("ERROR FROM CREATE CHANNEL CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -68,9 +69,11 @@ export const deleteChannel = async (req, res) => {
     return res.status(200).json(server);
   } catch (error) {
     console.log("ERROR FROM DELETE CHANNEL CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
+// edit channel
 export const editChannel = async (req, res) => {
   try {
     const { serverId, channelId } = req.params;
@@ -84,6 +87,7 @@ export const editChannel = async (req, res) => {
     return res.status(200).json(channel);
   } catch (error) {
     console.log("ERROR FROM EDIT CHANNEL CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -98,5 +102,6 @@ export const getChannelById = async (req, res) => {
     return res.status(200).json(channel);
   } catch (error) {
     console.log("ERROR FROM GET CHANNEL BY ID CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }

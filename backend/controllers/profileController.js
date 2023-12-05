@@ -20,6 +20,7 @@ export const getUserByUserId = async (req, res) => {
     return res.json(profile);
   } catch (error) {
     console.log("ERROR FROM GET USER BY USERID CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -36,6 +37,7 @@ export const getUserById = async (req, res) => {
     return res.status(200).json(profile);
   } catch (error) {
     console.log("ERROR FROM GET USER BY ID(NOT PROFILE) CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -48,5 +50,6 @@ export const createUser = async (req, res) => {
     return res.json(profile);
   } catch (error) {
     console.log("ERROR FROM CREATE USER BY USERID CONTROLLER", error);
+    return res.status(500).json({ message: error.message });
   }
 }
