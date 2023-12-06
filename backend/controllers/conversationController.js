@@ -60,3 +60,29 @@ export const createConversation = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }
+
+// get converation by conversatin Id
+export const getConversationByConversationId = async (req, res) => {
+  try {
+    const { conversationId, profileId } = req.params;
+    let conversation = await Conversation.findById(conversationId).populate(["memberOneId", "memberTwoId"]);
+    if (!conversation) {
+      return null;
+    }
+
+    const isMember = conversation.memberOneId.profileId.toString() == profileId.toString() || conversation.memberTwoId.profileId.toString() == profileId.toString();
+
+    if (!isMember) {
+      return null;
+    }
+
+    const memberOneProfile = await Profile.findById(conversation.memberOneId.profileId);
+    const memberTwoProfile = await Profile.findById(conversation.memberTwoId.profileId);
+
+    const returnConversation = { ...conversation._doc, memberOneProfile, memberTwoProfile };
+    return res.status(200).json(returnConversation);
+  } catch (error) {
+    console.log("[Error from getConversationByConversationId]", error);
+    return res.status(500).json({ message: error.message });
+  }
+}

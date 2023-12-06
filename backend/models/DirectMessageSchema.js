@@ -17,6 +17,10 @@ const DirectMessageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Conversation",
     },
+    deleted: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,
