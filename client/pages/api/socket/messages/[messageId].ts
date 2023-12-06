@@ -71,7 +71,6 @@ export default async function handler(
           deleted: true,
         }
       );
-
       message = data;
     }
 
