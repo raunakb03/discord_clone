@@ -50,7 +50,6 @@ export const getChannelMessages = async (req, res) => {
     const { cursor, channelId } = req.body;
     let messages;
     if (cursor) {
-      console.log("with cursor is exe")
       messages = await Message.find({
         channelId: channelId,
         _id: { $lt: cursor },
@@ -89,6 +88,51 @@ export const getChannelMessages = async (req, res) => {
     });
   } catch (error) {
     console.log(["ERROR FROM GET ALL MESSAGES CONTROLLER"], error);
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+// get message by id
+export const getMessageById = async (req, res) => {
+  try {
+    const { messageId, channelId } = req.params;
+    const message = await Message.findOne({
+      _id: messageId,
+      channelId: channelId
+    });
+
+    if (!message) {
+      throw new Error("No message found");
+    }
+
+    return res.status(200).json(message);
+
+  } catch (error) {
+    console.log(["ERROR FROM GET MESSAGE BY ID CONTROLLER"], error);
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+// delete a message
+export const editMessage = async (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const data = req.body;
+    const message = await Message.findByIdAndUpdate(
+      messageId,
+      data,
+      { new: true }
+    ).populate("memberId");
+
+    const profile = await Profile.findById(message.memberId.profileId);
+    const returnMessage = {
+      ...message._doc,
+      profile
+    }
+
+    return res.status(200).json(returnMessage);
+  } catch (error) {
+    console.log(["ERROR FROM DELETE MESSAGE CONTROLLER"], error);
     return res.status(500).json({ message: error.message })
   }
 }
