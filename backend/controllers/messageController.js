@@ -43,3 +43,52 @@ export const createNewMessage = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }
+
+// get all messages
+export const getChannelMessages = async (req, res) => {
+  try {
+    const { cursor, channelId } = req.body;
+    let messages;
+    if (cursor) {
+      console.log("with cursor is exe")
+      messages = await Message.find({
+        channelId: channelId,
+        _id: { $lt: cursor },
+      })
+        .populate("memberId")
+        .sort({ createdAt: -1 })
+        .skip(1)
+        .limit(10)
+        .exec();
+    } else {
+      messages = await Message.find({
+        channelId: channelId,
+      })
+        .populate("memberId")
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .exec();
+    }
+
+    const returnMessage = await Promise.all(messages.map(async (message) => {
+      const profile = await Profile.findById(message.memberId.profileId);
+      return {
+        ...message._doc,
+        profile
+      }
+    }))
+
+    let nextCursor = null;
+    if (returnMessage.length === 10) {
+      nextCursor = returnMessage[9]._id;
+    }
+
+    return res.status(200).json({
+      items: returnMessage,
+      nextCursor
+    });
+  } catch (error) {
+    console.log(["ERROR FROM GET ALL MESSAGES CONTROLLER"], error);
+    return res.status(500).json({ message: error.message })
+  }
+}

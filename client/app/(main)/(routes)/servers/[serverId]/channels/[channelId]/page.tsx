@@ -32,7 +32,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
 
   try {
     const { data } = await axios.get(
-      `${process.env.BASE_URL}/api/member/getMember/${profile._id}/${params.serverId}`
+      `${process.env.BASE_URL}/api/member/getMemberProfile/${profile._id}/${params.serverId}`
     );
     member = data;
   } catch (error) {
